@@ -97,7 +97,7 @@ export const SCHEDULE = [
         "timeOfDay": "Morning"
     },
     {
-        "slot": "7:15 - 8:00AM",
+        "slot": "7:15 - 8:00 AM",
         "timeOfDay": "Morning"
     },
     {
