@@ -14,8 +14,8 @@ export default function Home() {
           height={1000}
           className="w-full h-[90vh] object-cover"
         />
-        <div className="absolute top-1/4 bg-white flex flex-col justify-center items-center rounded-xl p-10 gap-10">
-          <h1 className="text-2xl font-bold text-center">Book yout first appointment Now</h1>
+        <div className="absolute top-1/4 bg-white flex flex-col justify-center items-center p-10 rounded-xl gap-10 w-fit">
+          <h1 className="text-lg lg:text-2xl font-bold text-center">Book yout first appointment Now</h1>
           <Link href={'/portal'}>
             <Button
               className="flex font-semibold text-lg w-40 h-12"
