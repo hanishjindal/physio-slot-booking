@@ -1,6 +1,12 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import Navbar from "@/components/common/Navbar";
+import Footer from "@/components/common/Footer";
+import React from "react";
+import ToasterContext from "./context/ToasterContext";
+import { Providers } from '@/redux/provider'
+import AuthContext from "./context/AuthContext";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -16,7 +22,18 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={`${inter.className} min-h-screen flex flex-col items-center justify-between relative`}>
+        <Providers>
+          <ToasterContext />
+          <AuthContext>
+            <div className="w-full h-full">
+              <Navbar />
+              {children}
+            </div>
+            <Footer />
+          </AuthContext>
+        </Providers>
+      </body>
     </html>
   );
 }
