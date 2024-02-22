@@ -136,15 +136,47 @@ const Portal = () => {
             toast.error("Select day first");
             return;
         }
+
         const index = selectedSlotList.indexOf(slot);
+
         if (index !== -1) {
             const updatedList = [...selectedSlotList];
             updatedList.splice(index, 1);
             setSelectedSlotList(updatedList)
         } else {
-            setSelectedSlotList([...selectedSlotList, slot])
+            // Check if the selected slot overlaps with any existing selected slots
+            if (checkSlopOverLap(slot)) {
+                return;
+            }
+
+            setSelectedSlotList([...selectedSlotList, slot]);
         }
     }
+
+    const checkSlopOverLap = (slot: string) => {
+        const slotTiming = slot.split(' - ');
+        const [newStartHour, newStartMinute] = slotTiming[0].split(":").map(Number)
+        const [newEndHour, newEndMinute] = slotTiming[1].split(' ')[0].split(":").map(Number);
+        const newSlotStartTime = new Date(2000, 0, 1, newStartHour, newStartMinute);
+        const newSlotEndTime = new Date(2000, 0, 1, newEndHour, newEndMinute);
+
+        for (const selectedSlot of selectedSlotList) {
+            const selectedSlotTiming = selectedSlot.split(' - ');
+            const [startHour, startMinute] = selectedSlotTiming[0].split(':').map(Number);
+            const [endHour, endMinute] = selectedSlotTiming[1].split(' ')[0].split(':').map(Number);
+
+            const existingSlotStartTime = new Date(2000, 0, 1, startHour, startMinute);
+            const existingSlotEndTime = new Date(2000, 0, 1, endHour, endMinute);
+            if (
+                (newSlotStartTime >= existingSlotStartTime && newSlotStartTime < existingSlotEndTime) ||
+                (existingSlotStartTime >= newSlotStartTime && existingSlotStartTime < newSlotEndTime)
+            ) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 
     const handleBookConfirm = async () => {
         if (!selectedPatient) {
@@ -194,7 +226,7 @@ const Portal = () => {
                             return (
                                 <span
                                     key={`${selectedDate}${index}`}
-                                    className={`col-span-6 sm:col-span-4 xl:col-span-3 rounded-full font-semibold cursor-pointer p-2 px-4 h-fit text-center border-2 text-sm lg:text-md ${(selectedSlotList.includes(time?.slot)) ? "bg-blue-500 text-white" : (bookedList.includes(time?.slot) ? "border-gray-500 !cursor-not-allowed" : "border-blue-500 bg-blue-100 text-blue-500")}`}
+                                    className={`col-span-6 sm:col-span-4 xl:col-span-3 rounded-full font-semibold cursor-pointer p-2 px-4 h-fit text-center border-2 text-sm lg:text-md ${(selectedSlotList.includes(time?.slot)) ? "bg-blue-500 text-white" : ((bookedList.includes(time?.slot) || checkSlopOverLap(time?.slot)) ? "border-gray-500 !cursor-not-allowed" : "border-blue-500 bg-blue-100 text-blue-500")}`}
                                     onClick={() => {
                                         if (!bookedList.includes(time?.slot)) {
                                             handleSlotInsert(time?.slot)
