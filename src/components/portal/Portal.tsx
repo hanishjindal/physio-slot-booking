@@ -155,15 +155,31 @@ const Portal = () => {
 
     const checkSlopOverLap = (slot: string) => {
         const slotTiming = slot.split(' - ');
-        const [newStartHour, newStartMinute] = slotTiming[0].split(":").map(Number)
-        const [newEndHour, newEndMinute] = slotTiming[1].split(' ')[0].split(":").map(Number);
+        let [newStartHour, newStartMinute] = slotTiming[0].split(":").map(Number)
+        let [newEndHour, newEndMinute] = slotTiming[1].split(' ')[0].split(":").map(Number);
+        if (slotTiming[1].split(' ')[1] === 'PM') {
+            if (newStartHour !== 12) {
+                newStartHour += 12;
+            }
+            if (newEndHour !== 12) {
+                newEndHour += 12;
+            }
+        }
         const newSlotStartTime = new Date(2000, 0, 1, newStartHour, newStartMinute);
         const newSlotEndTime = new Date(2000, 0, 1, newEndHour, newEndMinute);
 
         for (const selectedSlot of selectedSlotList) {
             const selectedSlotTiming = selectedSlot.split(' - ');
-            const [startHour, startMinute] = selectedSlotTiming[0].split(':').map(Number);
-            const [endHour, endMinute] = selectedSlotTiming[1].split(' ')[0].split(':').map(Number);
+            let [startHour, startMinute] = selectedSlotTiming[0].split(':').map(Number);
+            let [endHour, endMinute] = selectedSlotTiming[1].split(' ')[0].split(':').map(Number);
+            if (selectedSlotTiming[1].split(' ')[1] === 'PM') {
+                if (startHour !== 12) {
+                    startHour += 12;
+                }
+                if (endHour !== 12) {
+                    endHour += 12;
+                }
+            }
 
             const existingSlotStartTime = new Date(2000, 0, 1, startHour, startMinute);
             const existingSlotEndTime = new Date(2000, 0, 1, endHour, endMinute);
