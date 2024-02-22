@@ -165,6 +165,14 @@ export const SCHEDULE = [
         "timeOfDay": "Morning"
     },
     {
+        "slot": "11:30 - 12:15 AM",
+        "timeOfDay": "Morning"
+    },
+    {
+        "slot": "11:45 - 12:30 AM",
+        "timeOfDay": "Morning"
+    },
+    {
         "slot": "12:00 - 12:45 PM",
         "timeOfDay": "Afternoon"
     },
